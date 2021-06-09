@@ -10,7 +10,7 @@ class MovieTable extends Component {
   render() {
     return (
       <div>
-        <h3>Movie table is here</h3>
+        <h3>Please see out movies</h3>
         <ol>
           {this.state.movies.map((m) => (
             <li key={m._id}>
@@ -22,5 +22,13 @@ class MovieTable extends Component {
     );
   }
 }
+
+// 1 prisideti bootstrap@4.6
+// 2 isitrauksim bootsrap css
+
+// 3 sugeneruosi lentele su movie duomenimis
+//https://getbootstrap.com/docs/4.6/content/tables/
+
+// 4 prisideti dar viena stulpeli ir jamae turetu buti delete mygtukas
 
 export default MovieTable;
