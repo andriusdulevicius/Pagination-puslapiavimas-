@@ -6,15 +6,15 @@ class MovieTable extends Component {
     movies: getMovies(),
   };
 
-  skaicius() {
-    return this.state.movies.length;
-  }
-
   render() {
+    const { movies: mv } = this.state;
+    if (mv.length === 0)
+      return <div className="alert alert-warning">There are no movies at the moment</div>;
+
     return (
       <div>
         <h3>Please see out movies</h3>
-        <p>Showing {this.skaicius()} movies in out store</p>
+        <p>Showing {mv.length} movies in out store</p>
         <table className="table table-striped ">
           <thead>
             <tr>
@@ -33,7 +33,10 @@ class MovieTable extends Component {
                 <td>{movie.numberInStock}</td>
                 <td>{movie.dailyRentalRate}</td>
                 <td>
-                  <button onClick={this.handleDelete} className="btn btn-danger btn-sm">
+                  <button
+                    onClick={() => this.handleDelete(movie._id)}
+                    className="btn btn-danger btn-sm"
+                  >
                     Delete
                   </button>
                 </td>
@@ -44,8 +47,10 @@ class MovieTable extends Component {
       </div>
     );
   }
-  handleDelete = () => {
-    console.log('You are trying to delete, WHy ?');
+  handleDelete = (movieId) => {
+    console.log('You are trying to delete, WHy ?', movieId);
+    const moviesWithoutTheOneWeDeleted = this.state.movies.filter((m) => m._id !== movieId);
+    this.setState({ movies: moviesWithoutTheOneWeDeleted });
   };
 }
 
