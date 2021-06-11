@@ -27,7 +27,7 @@ class MovieTable extends Component {
           </thead>
           <tbody>
             {this.state.movies.map((movie) => (
-              <MovieRow movie={movie} key={movie._id} />
+              <MovieRow onDelete={this.handleDelete} movie={movie} key={movie._id} />
             ))}
           </tbody>
         </table>
