@@ -37,13 +37,24 @@ class MovieTable extends Component {
     this.setState({ pageSize: number });
   };
 
+  generateMovies = () => {
+    const { movies: mv, currentPage, pageSize, currentGenre } = this.state;
+    const movieArrToMap = paginate(mv, currentPage, pageSize);
+    const genresArr = sortGenres(mv, currentGenre);
+    if (this.state.currentGenre === '' || this.state.currentGenre === 'AllMovies') {
+      return movieArrToMap.map((movie) => <MovieRow onDelete={this.handleDelete} movie={movie} key={movie._id} />);
+    } else {
+      return genresArr.map((movie) => <MovieRow onDelete={this.handleDelete} movie={movie} key={movie._id} />);
+    }
+  };
+
   render() {
     const { movies: mv, currentPage, pageSize, currentGenre, genres } = this.state;
     if (mv.length === 0) return <div className='alert alert-warning'>There are no movies at the moment</div>;
 
     //paduoti tik tiek movies kiek reikia pagal pagination
-    const movieArrToMap = paginate(mv, currentPage, pageSize);
     const genresArr = sortGenres(mv, currentGenre);
+    const movieArrToMap = paginate(mv, currentPage, pageSize);
     return (
       <div className='movie'>
         <h3 className='my-4'>Please see out movies</h3>
@@ -66,11 +77,7 @@ class MovieTable extends Component {
                   <th></th>
                 </tr>
               </thead>
-              <tbody>
-                {(currentGenre === '' || currentGenre === 'AllMovies' ? movieArrToMap : genresArr).map((movie) => (
-                  <MovieRow onDelete={this.handleDelete} movie={movie} key={movie._id} />
-                ))}
-              </tbody>
+              <tbody>{this.generateMovies()}</tbody>
             </table>
 
             {
