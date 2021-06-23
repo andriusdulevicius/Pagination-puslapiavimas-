@@ -5,6 +5,8 @@ const Pagination = (props) => {
   const { itemCount, pageSize } = props;
   const pageCount = Math.ceil(itemCount / pageSize);
 
+  if (pageCount === 1) return null;
+
   const pages = () => {
     const arr = [];
     for (let i = 1; i <= pageCount; i++) {
