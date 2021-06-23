@@ -2,10 +2,13 @@ import React, { Component } from 'react';
 import { getMovies } from '../services/fakeMovieService';
 import MovieRow from './movieRow';
 import Pagination from './common/pagination';
+import { paginate } from './../utils/paginate';
+
 class MovieTable extends Component {
   state = {
     movies: getMovies(),
     pageSize: 4,
+    currentPage: 1,
   };
 
   handleDelete = (movieId) => {
@@ -14,10 +17,16 @@ class MovieTable extends Component {
     this.setState({ movies: moviesWithoutTheOneWeDeleted });
   };
 
+  handlePageChange = (pageNum) => {
+    this.setState({ currentPage: pageNum });
+  };
+
   render() {
-    const { movies: mv } = this.state;
+    const { movies: mv, currentPage, pageSize } = this.state;
     if (mv.length === 0) return <div className='alert alert-warning'>There are no movies at the moment</div>;
 
+    //paduoti tik tiek movies kiek reikia pagal pagination
+    const movieArrToMap = paginate(mv, currentPage, pageSize);
     return (
       <div>
         <h3>Please see out movies</h3>
@@ -33,12 +42,17 @@ class MovieTable extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.state.movies.map((movie) => (
+            {movieArrToMap.map((movie) => (
               <MovieRow onDelete={this.handleDelete} movie={movie} key={movie._id} />
             ))}
           </tbody>
         </table>
-        <Pagination itemCount={mv.length} pageSize={this.state.pageSize} />
+        <Pagination
+          currentPage={this.state.currentPage}
+          onPageChange={this.handlePageChange}
+          itemCount={mv.length}
+          pageSize={this.state.pageSize}
+        />
       </div>
     );
   }
