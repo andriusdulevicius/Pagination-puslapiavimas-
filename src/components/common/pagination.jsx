@@ -1,11 +1,11 @@
 //stateless functional component
 //Pagination- puslapiavimas (pvz prekiu ar kazko)
 
+import PropTypes from 'prop-types';
+
 const Pagination = (props) => {
   const { itemCount, pageSize, onPageChange, currentPage } = props;
   const pageCount = Math.ceil(itemCount / pageSize);
-
-  console.log(currentPage, 'current');
 
   if (pageCount === 1) return null;
 
@@ -33,6 +33,13 @@ const Pagination = (props) => {
       </ul>
     </nav>
   );
+};
+
+Pagination.propTypes = {
+  itemCount: PropTypes.number.isRequired,
+  pageSize: PropTypes.number.isRequired,
+  onPageChange: PropTypes.func.isRequired,
+  currentPage: PropTypes.number.isRequired,
 };
 
 export default Pagination;
