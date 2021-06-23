@@ -4,10 +4,11 @@
 import PropTypes from 'prop-types';
 
 const Pagination = (props) => {
-  const { itemCount, pageSize, onPageChange, currentPage } = props;
+  const { itemCount, onChangePageSize, sortedCount, pageSize, onPageChange, currentPage } = props;
   const pageCount = Math.ceil(itemCount / pageSize);
+  const sortedGenresCount = Math.ceil(sortedCount / pageSize);
 
-  if (pageCount === 1) return null;
+  if (pageCount === 1 || sortedGenresCount === 1) return null;
 
   const pages = () => {
     const arr = [];
@@ -31,6 +32,15 @@ const Pagination = (props) => {
           );
         })}
       </ul>
+      <label htmlFor='movies' className='pr-2'>
+        Choose how many movies to show on page:
+      </label>
+
+      <select name='movies' id='movies' onChange={(e) => onChangePageSize(+e.target.value)}>
+        <option value='3'>3</option>
+        <option value='5'>5</option>
+        <option value='8'>8</option>
+      </select>
     </nav>
   );
 };

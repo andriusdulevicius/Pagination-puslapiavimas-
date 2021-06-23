@@ -10,7 +10,7 @@ class MovieTable extends Component {
   state = {
     movies: [],
     genres: [],
-    pageSize: 4,
+    pageSize: 3,
     currentPage: 1,
     currentGenre: '',
   };
@@ -33,6 +33,10 @@ class MovieTable extends Component {
     this.setState({ currentGenre: genre });
   };
 
+  handleChangePageSize = (number) => {
+    this.setState({ pageSize: number });
+  };
+
   render() {
     const { movies: mv, currentPage, pageSize, currentGenre, genres } = this.state;
     if (mv.length === 0) return <div className='alert alert-warning'>There are no movies at the moment</div>;
@@ -40,7 +44,6 @@ class MovieTable extends Component {
     //paduoti tik tiek movies kiek reikia pagal pagination
     const movieArrToMap = paginate(mv, currentPage, pageSize);
     const genresArr = sortGenres(mv, currentGenre);
-
     return (
       <div className='movie'>
         <h3 className='my-4'>Please see out movies</h3>
@@ -69,12 +72,17 @@ class MovieTable extends Component {
                 ))}
               </tbody>
             </table>
-            <Pagination
-              currentPage={this.state.currentPage}
-              onPageChange={this.handlePageChange}
-              itemCount={mv.length}
-              pageSize={this.state.pageSize}
-            />
+
+            {
+              <Pagination
+                currentPage={this.state.currentPage}
+                onPageChange={this.handlePageChange}
+                itemCount={mv.length}
+                sortedCount={genresArr.length}
+                pageSize={this.state.pageSize}
+                onChangePageSize={this.handleChangePageSize}
+              />
+            }
           </div>
         </div>
       </div>
