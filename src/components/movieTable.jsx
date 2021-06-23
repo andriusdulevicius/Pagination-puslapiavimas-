@@ -1,21 +1,28 @@
 import React, { Component } from 'react';
 import { getMovies } from '../services/fakeMovieService';
 import MovieRow from './movieRow';
+import Pagination from './common/pagination';
 class MovieTable extends Component {
   state = {
     movies: getMovies(),
+    pageSize: 4,
+  };
+
+  handleDelete = (movieId) => {
+    console.log('You are trying to delete, WHy ?', movieId);
+    const moviesWithoutTheOneWeDeleted = this.state.movies.filter((m) => m._id !== movieId);
+    this.setState({ movies: moviesWithoutTheOneWeDeleted });
   };
 
   render() {
     const { movies: mv } = this.state;
-    if (mv.length === 0)
-      return <div className="alert alert-warning">There are no movies at the moment</div>;
+    if (mv.length === 0) return <div className='alert alert-warning'>There are no movies at the moment</div>;
 
     return (
       <div>
         <h3>Please see out movies</h3>
         <p>Showing {mv.length} movies in out store</p>
-        <table className="table table-striped ">
+        <table className='table table-striped '>
           <thead>
             <tr>
               <th>Title</th>
@@ -31,14 +38,10 @@ class MovieTable extends Component {
             ))}
           </tbody>
         </table>
+        <Pagination itemCount={mv.length} pageSize={this.state.pageSize} />
       </div>
     );
   }
-  handleDelete = (movieId) => {
-    console.log('You are trying to delete, WHy ?', movieId);
-    const moviesWithoutTheOneWeDeleted = this.state.movies.filter((m) => m._id !== movieId);
-    this.setState({ movies: moviesWithoutTheOneWeDeleted });
-  };
 }
 
 export default MovieTable;
